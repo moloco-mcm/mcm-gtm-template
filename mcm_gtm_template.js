@@ -1,3 +1,6 @@
+// PARTNER ACKNOWLEDGES THAT THE GOOGLE SHEET AND ASSOCIATED APPS SCRIPT CODE ARE BEING PROVIDED “AS IS” AND “AS AVAILABLE”. 
+// MOLOCO DISCLAIMS ALL WARRANTIES NOT EXPLICITLY STATED HEREIN, EXPRESS OR IMPLIED
+
 const sendHttpRequest = require('sendHttpRequest');
 const setResponseBody = require('setResponseBody');
 const setResponseHeader = require('setResponseHeader');

@@ -1,5 +1,5 @@
 homepage: "https://www.moloco.com/"
-documentation: "https://mcm-docs.moloco.com/docs/"
+documentation: "https://mcm-docs.moloco.com/docs/google-tag-manager-integration-guide/"
 versions:
   - sha: 8d09c7e12dcaefc7f4387709c1645085e62c7ae8
     changeNotes: Initial Version

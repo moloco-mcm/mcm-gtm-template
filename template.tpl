@@ -13,11 +13,10 @@ ___INFO___
   "id": "cvt_temp_public_id",
   "version": 1,
   "securityGroups": [],
-  "displayName": "MCM User Event API",
-  "categories": ["ATTRIBUTION", "ADVERTISING","CONVERSIONS"]
+  "displayName": "MCM User Event API - archive",
   "brand": {
-    "id": "MOLOCO",
-    "displayName": "MOLOCO"
+    "id": "brand_dummy",
+    "displayName": ""
   },
   "description": "",
   "containerContexts": [
@@ -77,10 +76,11 @@ ___TEMPLATE_PARAMETERS___
     "displayName": "page id",
     "simpleValueType": true
   },
-  {
+   {
     "type": "TEXT",
     "name": "items",
     "displayName": "items",
+    "description":"items info retrieved from Ecommerce data",
     "simpleValueType": true
   },
   {
@@ -143,6 +143,27 @@ const jsonPayloadObject = {
   }
 };
 
+//list of supported event_type
+const supportedEvents = ['ADD_TO_CART', 'ADD_TO_WISHLIST', 'VIEW_ITEM', 'PURCHASE', 'SEARCH', 'HOME', 'PAGE_VIEW'];
+//validating event_type
+if (supportedEvents.indexOf(data.event_type) === -1) {
+  logToConsole('Unsupported event type:', data.event_type);
+  data.gtmOnFailure();
+  return;
+}
+//list of event_type require item info
+const itemEvents = ['ADD_TO_CART', 'ADD_TO_WISHLIST', 'VIEW_ITEM', 'PURCHASE'];
+
+// Check for required items array for itemEvents
+if (itemEvents.indexOf(data.event_type) !== -1) {
+  if (!(data.items && typeof data.items.length === 'number' && data.items.length > 0)) {
+    logToConsole('Error: items array is missing or empty', data.items);
+    data.gtmOnFailure();
+    return;
+  }
+}
+
+
 // Add the `items` field 
 if (data.event_type == "ADD_TO_CART" || data.event_type == "ADD_TO_WISHLIST") {
   jsonPayloadObject.items = data.items.map(function(item) {
@@ -161,7 +182,6 @@ if (data.event_type == "ADD_TO_CART" || data.event_type == "ADD_TO_WISHLIST") {
 }
 // Add the `items` field only with item_id
 if (data.event_type == "VIEW_ITEM") {
-  logToConsole('Item page view being handled', data.items);
   jsonPayloadObject.event_type = 'ITEM_PAGE_VIEW';
   jsonPayloadObject.items = data.items.map(function(item) {
     
@@ -203,6 +223,7 @@ const headers = {
   'Content-Type': 'application/json',
   'X-API-Key': key  // Api key
 };
+
 
 // Send the HTTP request using sendHttpRequest 
 sendHttpRequest(apiUrl, {
@@ -321,6 +342,6 @@ scenarios: []
 
 ___NOTES___
 
-Created on 5/15/2025, 2:06:56 PM
+Created on 5/19/2025, 3:54:28 PM
 
 

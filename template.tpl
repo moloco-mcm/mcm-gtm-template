@@ -18,7 +18,7 @@ ___INFO___
     "id": "brand_dummy",
     "displayName": ""
   },
-  "description": "",
+  "description": "Sends user event data to MCM User Event API for server-side tracking.",
   "containerContexts": [
     "SERVER"
   ]

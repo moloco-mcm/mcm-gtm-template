@@ -143,8 +143,6 @@ const jsonPayloadObject = {
   }
 };
 
-logToConsole('Event type', data.event_type);
-
 // Add the `items` field 
 if (data.event_type == "ADD_TO_CART" || data.event_type == "ADD_TO_WISHLIST") {
   jsonPayloadObject.items = data.items.map(function(item) {
@@ -206,7 +204,6 @@ const headers = {
   'X-API-Key': key  // Api key
 };
 
-logToConsole('currency data from ecommerce variable', data.ecommerce);
 // Send the HTTP request using sendHttpRequest 
 sendHttpRequest(apiUrl, {
   headers: headers,

@@ -129,6 +129,11 @@ const JSON = require('JSON');
 const apiUrl = data.api_url;
 const key = data.api_key;
 
+if (!data.os || !data.persistent_id) {
+  logToConsole('Missing required device info: os or persistent_id', { os: data.os, persistent_id: data.persistent_id });
+  data.gtmOnFailure();
+  return;
+}
 const jsonPayloadObject = {
   event_type: data.event_type,
   channel_type: data.channel_type,

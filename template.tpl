@@ -130,8 +130,41 @@ const JSON = require('JSON');
 const apiUrl = data.api_url;
 const key = data.api_key;
 
-if (!data.os || !data.persistent_id) {
-  logToConsole('Missing required device info: os or persistent_id', { os: data.os, persistent_id: data.persistent_id });
+// required fields validation logic
+if (!data.event_type || !data.channel_type || !data.id || !data.timestamp || !data.os) {
+  logToConsole('Missing required field(s): event_type, channel_type, id, timestamp, or os', {
+    event_type: data.event_type,
+    channel_type: data.channel_type,
+    id: data.id,
+    timestamp: data.timestamp,
+    os: data.os
+  });
+  data.gtmOnFailure();
+  return;
+}
+
+if (!data.user_id && !data.persistent_id) {
+  logToConsole('Either user_id or persistent_id must be present', {
+    user_id: data.user_id,
+    persistent_id: data.persistent_id
+  });
+  data.gtmOnFailure();
+  return;
+}
+// PAGE_VIEW event_type requires page_id
+if (data.event_type === 'PAGE_VIEW' && !data.page_id) {
+  logToConsole('Missing required field: page_id for PAGE_VIEW event_type', {
+    page_id: data.page_id
+  });
+  data.gtmOnFailure();
+  return;
+}
+
+// SEARCH event_type requires search_term
+if (data.event_type === 'SEARCH' && !data.search_term) {
+  logToConsole('Missing required field: search_term for SEARCH event_type', {
+    search_term: data.search_term
+  });
   data.gtmOnFailure();
   return;
 }

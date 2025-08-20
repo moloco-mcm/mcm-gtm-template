@@ -130,13 +130,12 @@ const JSON = require('JSON');
 const apiUrl = data.api_url;
 const key = data.api_key;
 
-// required fields validation logic
-if (!data.event_type || !data.channel_type || !data.id || !data.timestamp || !data.os) {
-  logToConsole('Missing required field(s): event_type, channel_type, id, timestamp, or os', {
+// required fields validation logic.
+if (!data.event_type || !data.channel_type || !data.id || !data.os) {
+  logToConsole('Missing required field(s): event_type, channel_type, id, or os', {
     event_type: data.event_type,
     channel_type: data.channel_type,
     id: data.id,
-    timestamp: data.timestamp,
     os: data.os
   });
   data.gtmOnFailure();
@@ -168,13 +167,31 @@ if (data.event_type === 'SEARCH' && !data.search_term) {
   data.gtmOnFailure();
   return;
 }
+
+// Generate a trusted timestamp in ms (server clock) and compare with client-provided timestamp
+const getTimestamp = require('getTimestamp');
+const timestampServer = getTimestamp(); // server timestamp in ms
+let timestampClient = data.timestamp - 0;
+
+// If no timestamp provided, fallback to server time
+if (!data.timestamp) timestampClient = timestampServer;
+
+// If timestampClient is NaN, fallback to server time
+if (timestampClient !== timestampClient) timestampClient = timestampServer;
+
+// If client timestamp looks like seconds (10 digits), convert to ms (NaN-safe)
+if (timestampClient === timestampClient && timestampClient < 10000000000) {
+  timestampClient = timestampClient * 1000;
+}
+// If the client timestamp is in the future relative to the server, cap it to server time
+const timestamp = (timestampClient > timestampServer) ? timestampServer : timestampClient;
 const jsonPayloadObject = {
   event_type: data.event_type,
   channel_type: data.channel_type,
   id: data.id,
   user_id: data.user_id,
   page_id: data.page_id,
-  timestamp: data.timestamp,
+  timestamp: timestamp,
 //device info by OS and persistent_id from template fields
   device: {
     os: data.os,

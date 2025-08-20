@@ -1,6 +1,8 @@
 homepage: "https://www.moloco.com/"
 documentation: "https://mcm-docs.moloco.com/docs/google-tag-manager-integration-guide/"
 versions:
+  - sha: 75af3c084a5ec57feed11edfcb0396b9080be109
+    changeNotes: fall back to server timestamp when client timestamp is missing, invalid, or in the future.
   - sha: 96f0c09c67b7e4a4bed4522fb11d8f5dbdeb8772
     changeNotes: Removed https address whitelisting
   - sha: 544e7cb465c393ab55874a38ed700ea418869973

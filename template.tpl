@@ -49,12 +49,6 @@ ___TEMPLATE_PARAMETERS___
   },
   {
     "type": "TEXT",
-    "name": "timestamp",
-    "displayName": "timestamp",
-    "simpleValueType": true
-  },
-  {
-    "type": "TEXT",
     "name": "event_type",
     "displayName": "event type",
     "simpleValueType": true
@@ -120,9 +114,6 @@ ___TEMPLATE_PARAMETERS___
 ___SANDBOXED_JS_FOR_SERVER___
 
 const sendHttpRequest = require('sendHttpRequest');
-const setResponseBody = require('setResponseBody');
-const setResponseHeader = require('setResponseHeader');
-const setResponseStatus = require('setResponseStatus');
 const logToConsole = require('logToConsole');
 const JSON = require('JSON');
 
@@ -130,13 +121,14 @@ const JSON = require('JSON');
 const apiUrl = data.api_url;
 const key = data.api_key;
 
-// required fields validation logic.
-if (!data.event_type || !data.channel_type || !data.id || !data.os) {
+// required fields validation logic
+if (!data.event_type || !data.channel_type || !data.id || !data.os || !data.currency) {
   logToConsole('Missing required field(s): event_type, channel_type, id, or os', {
     event_type: data.event_type,
     channel_type: data.channel_type,
     id: data.id,
-    os: data.os
+    os: data.os,
+    currency: data.currency
   });
   data.gtmOnFailure();
   return;
@@ -168,23 +160,9 @@ if (data.event_type === 'SEARCH' && !data.search_term) {
   return;
 }
 
-// Generate a trusted timestamp in ms (server clock) and compare with client-provided timestamp
+// use server timestamp (ms)
 const getTimestamp = require('getTimestamp');
-const timestampServer = getTimestamp(); // server timestamp in ms
-let timestampClient = data.timestamp - 0;
-
-// If no timestamp provided, fallback to server time
-if (!data.timestamp) timestampClient = timestampServer;
-
-// If timestampClient is NaN, fallback to server time
-if (timestampClient !== timestampClient) timestampClient = timestampServer;
-
-// If client timestamp looks like seconds (10 digits), convert to ms (NaN-safe)
-if (timestampClient === timestampClient && timestampClient < 10000000000) {
-  timestampClient = timestampClient * 1000;
-}
-// If the client timestamp is in the future relative to the server, cap it to server time
-const timestamp = (timestampClient > timestampServer) ? timestampServer : timestampClient;
+const timestamp = getTimestamp(); // server timestamp in ms
 const jsonPayloadObject = {
   event_type: data.event_type,
   channel_type: data.channel_type,
@@ -271,9 +249,6 @@ if (data.event_type == "SEARCH") {
 
 // Convert the object to JSON string
 const jsonPayload = JSON.stringify(jsonPayloadObject, null, 2);
-
-logToConsole('JSON body', jsonPayload);
-
 const apiMethod = 'POST';     
 const headers = {
   'Content-Type': 'application/json',
@@ -318,34 +293,6 @@ ___SERVER_PERMISSIONS___
           "value": {
             "type": 1,
             "string": "debug"
-          }
-        }
-      ]
-    },
-    "clientAnnotations": {
-      "isEditedByUser": true
-    },
-    "isRequired": true
-  },
-  {
-    "instance": {
-      "key": {
-        "publicId": "access_response",
-        "versionId": "1"
-      },
-      "param": [
-        {
-          "key": "writeResponseAccess",
-          "value": {
-            "type": 1,
-            "string": "specific"
-          }
-        },
-        {
-          "key": "writeHeaderAccess",
-          "value": {
-            "type": 1,
-            "string": "specific"
           }
         }
       ]

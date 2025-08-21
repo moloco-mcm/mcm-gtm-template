@@ -1,0 +1,10 @@
+# Ignore code.js file
+code.js
+
+# Common files to ignore
+.DS_Store
+*.log
+node_modules/
+.env
+.env.local
+.env.*.local

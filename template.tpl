@@ -114,9 +114,6 @@ ___TEMPLATE_PARAMETERS___
 ___SANDBOXED_JS_FOR_SERVER___
 
 const sendHttpRequest = require('sendHttpRequest');
-const setResponseBody = require('setResponseBody');
-const setResponseHeader = require('setResponseHeader');
-const setResponseStatus = require('setResponseStatus');
 const logToConsole = require('logToConsole');
 const JSON = require('JSON');
 
@@ -125,12 +122,13 @@ const apiUrl = data.api_url;
 const key = data.api_key;
 
 // required fields validation logic
-if (!data.event_type || !data.channel_type || !data.id || !data.os) {
+if (!data.event_type || !data.channel_type || !data.id || !data.os || !data.currency) {
   logToConsole('Missing required field(s): event_type, channel_type, id, or os', {
     event_type: data.event_type,
     channel_type: data.channel_type,
     id: data.id,
-    os: data.os
+    os: data.os,
+    currency: data.currency
   });
   data.gtmOnFailure();
   return;
@@ -295,34 +293,6 @@ ___SERVER_PERMISSIONS___
           "value": {
             "type": 1,
             "string": "debug"
-          }
-        }
-      ]
-    },
-    "clientAnnotations": {
-      "isEditedByUser": true
-    },
-    "isRequired": true
-  },
-  {
-    "instance": {
-      "key": {
-        "publicId": "access_response",
-        "versionId": "1"
-      },
-      "param": [
-        {
-          "key": "writeResponseAccess",
-          "value": {
-            "type": 1,
-            "string": "specific"
-          }
-        },
-        {
-          "key": "writeHeaderAccess",
-          "value": {
-            "type": 1,
-            "string": "specific"
           }
         }
       ]

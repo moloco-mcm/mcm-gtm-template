@@ -122,13 +122,12 @@ const apiUrl = data.api_url;
 const key = data.api_key;
 
 // required fields validation logic
-if (!data.event_type || !data.channel_type || !data.id || !data.os || !data.currency) {
+if (!data.event_type || !data.channel_type || !data.id || !data.os) {
   logToConsole('Missing required field(s): event_type, channel_type, id, or os', {
     event_type: data.event_type,
     channel_type: data.channel_type,
     id: data.id,
-    os: data.os,
-    currency: data.currency
+    os: data.os
   });
   data.gtmOnFailure();
   return;

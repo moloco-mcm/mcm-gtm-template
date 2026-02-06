@@ -1,6 +1,8 @@
 homepage: "https://www.moloco.com/"
 documentation: "https://mcm-docs.moloco.com/docs/google-tag-manager-integration-guide/"
 versions:
+  - sha: 433bc821b1544595cbffe8af0ba300bb38ae3c8d
+    changeNotes: removed currency info validation from default check
   - sha: 14e1cb22a3eaedd921ca0230e46e8af87a5d7345
     changeNotes: timestamp usage simplified.
   - sha: 75af3c084a5ec57feed11edfcb0396b9080be109

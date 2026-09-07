@@ -1,5 +1,17 @@
-# Ignore code.js file
-code.js
+# Claude Code
+CLAUDE.md
+.claude/
+
+# Demo
+demo/
+
+# Local development/test files
+exported_from_GTM/
+template.js
+gtm_screenshot.jpg
+test_index.html
+test_index.js
+test_index_from_guide.html
 
 # Common files to ignore
 .DS_Store

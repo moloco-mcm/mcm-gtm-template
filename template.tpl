@@ -286,8 +286,10 @@ if (data.event_type === "PURCHASE") {
   };
 }
 
-// SEARCH
-if (data.event_type === "SEARCH") {
+// SEARCH (required) / VIEW_ITEM (optional) -> search_query
+if (
+  (data.event_type === "SEARCH" || data.event_type === "VIEW_ITEM") && data.search_term
+) {
   jsonPayloadObject.search_query = data.search_term;
 }
 

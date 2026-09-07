@@ -1,6 +1,8 @@
 homepage: "https://www.moloco.com/"
 documentation: "https://mcm-docs.moloco.com/docs/google-tag-manager-integration-guide/"
 versions:
+  - sha: 6fd84a7e96a65904e02e49a64693ccf9b5b764bc
+    changeNotes: Populate search_query for VIEW_ITEM (ITEM_PAGE_VIEW) when search_term is provided
   - sha: 6c03d41488ff8640aecf5ec852eb11eaaf35b8cc
     changeNotes: Added seller_id/price_seller as optional field for ADD_TO_CART, ADD_TO_WISHLIST, PURCHASE items  
   - sha: 433bc821b1544595cbffe8af0ba300bb38ae3c8d
